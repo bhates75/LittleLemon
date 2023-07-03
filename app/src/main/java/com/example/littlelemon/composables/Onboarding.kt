@@ -1,6 +1,8 @@
 package com.example.littlelemon.composables
 
+import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -15,6 +17,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -136,9 +139,16 @@ fun Onboarding(navController: NavHostController, prefs: SharedPreferences, logge
         )
         Button(
             onClick = {
-                navController.navigate(Home.route)
-                prefs.edit().putBoolean("LoggedIn", true).commit()
-                loggedInLiveData.value = true
+                if(firstName.isBlank() || lastName.isBlank() || email.isBlank()){
+                    Log.d("MESS", "Login Failed")
+                }
+                else{
+                    navController.navigate(Home.route)
+                    //Changes the login shared preference to true.
+                    prefs.edit().putBoolean("LoggedIn", true).commit()
+                    //Updates the value of the live data so it'll update where state is used.
+                    loggedInLiveData.value = true
+                }
             },
             modifier = Modifier
                 .fillMaxWidth()

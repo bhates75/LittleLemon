@@ -18,11 +18,18 @@ import com.example.littlelemon.ui.theme.LittleLemonTheme
 
 class MainActivity : ComponentActivity() {
     private val loggedInLiveData = MutableLiveData<Boolean>()
+    private val userFirstName = MutableLiveData<String>()
+    private val userLastName = MutableLiveData<String>()
+    private val userEmail = MutableLiveData<String>()
     private val sharedPreferences by lazy{
         getSharedPreferences("LoggedIn", ComponentActivity.MODE_PRIVATE)
     }
     override fun onCreate(savedInstanceState: Bundle?) {
+        //Initializes live data to shared preferences with an initial boolean value.
         loggedInLiveData.value = sharedPreferences.getBoolean("LoggedIn", false)
+        userFirstName.value = sharedPreferences.getString("First Name", "")
+        userLastName.value = sharedPreferences.getString("Last Name", "")
+        userEmail.value = sharedPreferences.getString("Email", "")
         super.onCreate(savedInstanceState)
         setContent {
             LittleLemonTheme {
@@ -31,7 +38,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Navigation(sharedPreferences, loggedInLiveData)
+                    Navigation(sharedPreferences, loggedInLiveData, userFirstName, userLastName, userEmail)
                 }
             }
         }

@@ -17,7 +17,8 @@ import com.example.littlelemon.Profile
 
 
 @Composable
-fun Navigation(prefs: SharedPreferences, loggedInLiveData: MutableLiveData<Boolean>){
+fun Navigation(prefs: SharedPreferences, loggedInLiveData: MutableLiveData<Boolean>, userFirstName: MutableLiveData<String>, userLastName: MutableLiveData<String>, userEmail: MutableLiveData<String>){
+    //Creates a state out of the passed in livedata so it'll update.
     val selected = loggedInLiveData.observeAsState(initial = false)
     val navController = rememberNavController()
     val start: String = if(selected.value == true){
@@ -30,10 +31,10 @@ fun Navigation(prefs: SharedPreferences, loggedInLiveData: MutableLiveData<Boole
             Onboarding(navController, prefs, loggedInLiveData)
         }
         composable(Home.route){
-            Home()
+            Home(navController)
         }
         composable(Profile.route){
-            Profile()
+            Profile(navController, prefs, userFirstName, userLastName, userEmail)
         }
     }
 }
