@@ -17,18 +17,23 @@ import com.example.littlelemon.composables.Onboarding
 import com.example.littlelemon.ui.theme.LittleLemonTheme
 
 class MainActivity : ComponentActivity() {
+    //Creates variables to hold the data from shared preferences throughout the app.
     private val loggedInLiveData = MutableLiveData<Boolean>()
     private val userFirstName = MutableLiveData<String>()
     private val userLastName = MutableLiveData<String>()
     private val userEmail = MutableLiveData<String>()
+    //Creates a shared preference containing data for the profile info and start screen.
     private val sharedPreferences by lazy{
-        getSharedPreferences("LoggedIn", ComponentActivity.MODE_PRIVATE)
+        getSharedPreferences("llPrefs", ComponentActivity.MODE_PRIVATE)
+        //getSharedPreferences("FirstName", ComponentActivity.MODE_PRIVATE)
+        //getSharedPreferences("LastName", ComponentActivity.MODE_PRIVATE)
+        //getSharedPreferences("Email", ComponentActivity.MODE_PRIVATE)
     }
     override fun onCreate(savedInstanceState: Bundle?) {
-        //Initializes live data to shared preferences with an initial boolean value.
+        //Initializes live data to shared preferences with an initial values.
         loggedInLiveData.value = sharedPreferences.getBoolean("LoggedIn", false)
-        userFirstName.value = sharedPreferences.getString("First Name", "")
-        userLastName.value = sharedPreferences.getString("Last Name", "")
+        userFirstName.value = sharedPreferences.getString("FirstName", "")
+        userLastName.value = sharedPreferences.getString("LastName", "")
         userEmail.value = sharedPreferences.getString("Email", "")
         super.onCreate(savedInstanceState)
         setContent {
@@ -42,21 +47,5 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    LittleLemonTheme {
-        Greeting("Android")
     }
 }

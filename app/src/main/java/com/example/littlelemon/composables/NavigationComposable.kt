@@ -21,6 +21,7 @@ fun Navigation(prefs: SharedPreferences, loggedInLiveData: MutableLiveData<Boole
     //Creates a state out of the passed in livedata so it'll update.
     val selected = loggedInLiveData.observeAsState(initial = false)
     val navController = rememberNavController()
+    //Initializes the start destination of the app based on whether the user is logged in or not.
     val start: String = if(selected.value == true){
         Home.route
     } else {
@@ -28,7 +29,7 @@ fun Navigation(prefs: SharedPreferences, loggedInLiveData: MutableLiveData<Boole
     }
     NavHost(navController = navController, startDestination = start){
         composable(Onboarding.route){
-            Onboarding(navController, prefs, loggedInLiveData)
+            Onboarding(navController, prefs, loggedInLiveData, userFirstName, userLastName, userEmail)
         }
         composable(Home.route){
             Home(navController)

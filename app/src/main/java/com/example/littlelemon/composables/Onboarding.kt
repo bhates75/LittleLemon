@@ -31,6 +31,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.edit
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavHostController
 import com.example.littlelemon.Home
@@ -38,7 +39,14 @@ import com.example.littlelemon.MainActivity
 import com.example.littlelemon.R
 
 @Composable
-fun Onboarding(navController: NavHostController, prefs: SharedPreferences, loggedInLiveData: MutableLiveData<Boolean>) {
+fun Onboarding(
+    navController: NavHostController,
+    prefs: SharedPreferences,
+    loggedInLiveData: MutableLiveData<Boolean>,
+    userFirstName: MutableLiveData<String>,
+    userLastName: MutableLiveData<String>,
+    userEmail: MutableLiveData<String>
+) {
     Column(
         modifier = Modifier.fillMaxHeight(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -143,11 +151,17 @@ fun Onboarding(navController: NavHostController, prefs: SharedPreferences, logge
                     Log.d("MESS", "Login Failed")
                 }
                 else{
-                    navController.navigate(Home.route)
                     //Changes the login shared preference to true.
-                    prefs.edit().putBoolean("LoggedIn", true).commit()
+                    prefs.edit().putBoolean("LoggedIn", true).apply()
                     //Updates the value of the live data so it'll update where state is used.
                     loggedInLiveData.value = true
+                    prefs.edit().putString("FirstName", firstName).apply()
+                    userFirstName.value = firstName
+                    prefs.edit().putString("LastName", lastName).apply()
+                    userLastName.value = lastName
+                    prefs.edit().putString("Email", email).apply()
+                    userEmail.value = email
+                    navController.navigate(Home.route)
                 }
             },
             modifier = Modifier

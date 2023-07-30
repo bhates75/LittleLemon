@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavHostController
+import com.example.littlelemon.Home
 import com.example.littlelemon.Onboarding
 import com.example.littlelemon.R
 
@@ -101,6 +102,16 @@ fun Profile(navController: NavHostController, prefs: SharedPreferences, userFirs
         ) {
             Text(text = "Log Out")
         }
+        Button(
+            onClick = {
+                navController.navigate(Home.route)
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 34.dp, start = 16.dp, end = 16.dp)
+        ){
+            Text(text = "Go Back")
+        }
     }
 }
 
@@ -128,8 +139,8 @@ fun ProfilePreview(){
 
         Column(
             modifier = Modifier
-                        .align(Alignment.Start)
-                        .padding(start = 16.dp, top = 12.dp)
+                .align(Alignment.Start)
+                .padding(start = 16.dp, top = 12.dp)
         ) {
             Text(
                 text = "First Name",
