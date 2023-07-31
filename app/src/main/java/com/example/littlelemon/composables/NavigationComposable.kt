@@ -10,14 +10,17 @@ import androidx.navigation.Navigation
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.room.RoomDatabase
 import com.example.littlelemon.Home
+import com.example.littlelemon.LLDatabase
+import com.example.littlelemon.MenuNetworkItem
 import com.example.littlelemon.Onboarding
 import com.example.littlelemon.Profile
-
+import io.ktor.client.HttpClient
 
 
 @Composable
-fun Navigation(prefs: SharedPreferences, loggedInLiveData: MutableLiveData<Boolean>, userFirstName: MutableLiveData<String>, userLastName: MutableLiveData<String>, userEmail: MutableLiveData<String>){
+fun Navigation(prefs: SharedPreferences, loggedInLiveData: MutableLiveData<Boolean>, userFirstName: MutableLiveData<String>, userLastName: MutableLiveData<String>, userEmail: MutableLiveData<String>, database: LLDatabase){
     //Creates a state out of the passed in livedata so it'll update.
     val selected = loggedInLiveData.observeAsState(initial = false)
     val navController = rememberNavController()
@@ -32,7 +35,7 @@ fun Navigation(prefs: SharedPreferences, loggedInLiveData: MutableLiveData<Boole
             Onboarding(navController, prefs, loggedInLiveData, userFirstName, userLastName, userEmail)
         }
         composable(Home.route){
-            Home(navController)
+            Home(navController, database)
         }
         composable(Profile.route){
             Profile(navController, prefs, userFirstName, userLastName, userEmail)
